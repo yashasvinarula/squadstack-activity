@@ -99,7 +99,7 @@ class GetStartedModal extends Component{
       { key: 'Option 2', value: 'Option 2', text: 'Option 2' },
       { key: 'Option 3', value: 'Option 3', text: 'Option 3' },
     ];
-    const leadSources = ['Zillow', 'Realtor', 'Zoppo', 'Others'];
+    const leadSources = ['Zillow', 'Realtor', 'Yloppo', 'Others'];
     const sources = ['Google', 'Facebook', 'Email', 'Friends', 'Real Closers'];
     return(
       <Modal
