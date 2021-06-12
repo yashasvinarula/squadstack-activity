@@ -1,25 +1,60 @@
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import {Container} from 'semantic-ui-react';
+import {connect} from 'react-redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { setNetworkStatus } from './actions';
+
+import PricesHeader from './components/PricesHeader';
+import PlanContainer from './components/PlanContainer';
+import Offline from './components/Offline';
+
+
+
+class App extends Component{
+
+  constructor(props){
+    super(props);
+    this.handleNetworkChange = this.handleNetworkChange.bind(this);
+  }
+
+  componentDidMount(){
+    this.handleNetworkChange();
+    window.addEventListener('online', this.handleNetworkChange);
+    window.addEventListener('offline', this.handleNetworkChange);
+  }
+
+  componentWillUnmount(){
+    window.removeEventListener('online');
+    window.removeEventListener('offline');
+  }
+
+  handleNetworkChange(){
+    this.props.setNetworkStatus(window.navigator.onLine);
+  }
+
+  render(){
+    return(
+      <>
+        {
+          this.props.online ? (
+            <Container>
+              <PricesHeader />
+              <PlanContainer />
+            </Container>
+          ) : (
+            <Offline />
+          )
+        }
+      </>
+    )
+  }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    online: state.online
+  }
+}
+
+export default connect(mapStateToProps, {setNetworkStatus})(App);
